@@ -18,5 +18,6 @@ require('./src/routes/media.routes')(app);
 require('./src/routes/ads.routes')(app);
 require('./src/routes/slider.routes')(app);
 require('./src/routes/categories.routes')(app);
+require('./src/routes/directory.routes')(app);
 
-app.listen (3000);
+app.listen ();

@@ -44,15 +44,30 @@ Post.getAll =  (req, result) => {
         query = 'SELECT ?? FROM ?? WHERE ?? = ? ORDER BY id DESC LIMIT ' + limit;
     }
     
-    sql.query(query, [columns, 'articles', wheres, lang], (error,res) => {
-        if(error)
-        return result(error, null);
+    if(req.query.type) {
+        return sql.query("SELECT ?? FROM articles WHERE article_language=" + `'${lang}'` + " AND article_type = " + `'${req.query.type}'`+" ORDER BY id DESC LIMIT " + limit, [columns], (error,res) => {
+            if(error)
+            return result(error, null);
         
-        return result(null,{
-            total: totalCount,
-            list: res,
+            return result(null,{
+                total: totalCount,
+                list: res,
+                payload: req.query
+            });
         });
-    });
+    } else {
+        return sql.query(query, [columns, 'articles', wheres, lang], (error,res) => {
+            if(error)
+            return result(error, null);
+        
+            return result(null,{
+                total: totalCount,
+                list: res,
+            });
+        });
+    }
+    
+
 }
 
 Post.getOne =  (postId, result) => {
